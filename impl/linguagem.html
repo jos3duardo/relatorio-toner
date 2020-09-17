@@ -30,14 +30,14 @@
     <body>
     
         <script language=javascript type="text/javascript">
-            document.write ("<h5> Hoje é " + dayName[now.getDay() ] + ", " + now.getDate () + " de " + monName [now.getMonth() ]   +  " de "  +     now.getFullYear () + ". </h5>")
+            document.write ("<h6> Hoje é " + dayName[now.getDay() ] + ", " + now.getDate () + " de " + monName [now.getMonth() ]   +  " de "  +     now.getFullYear () + ". </h6>")
             </script>
         
     <html>
-    <div class="conteiner">
+    <div class="col-md-8">
         <form>
             <label></label>
-            <div class="col-14">
+            <div class="col-14 ">
             <div class="form-group"><select class="custom-select" id="linguagem">
                 <option value="Selecionar">Selecionar Modelos Disponeis </option>
 
@@ -47,8 +47,8 @@
                 <option value="D"> Troca de Drum 17/18/58/1060/8865/</option>
                 <option value="O"> Outros Modelos Toner Sharp Canon Kiocera OKi..  <Script></Script></option>
                 </select></div>
-            <div><button type="button" class= "btn btn-primary btn-lg  " onclick="main()">Adicionar</button></div>
-            <br><div><button type="button" class=" btn btn-secondary btn-lg " onclick="window.print();">imprimir</button></div>
+            <div><button type="button" class= "btn btn-primary btn-lg active " onclick="main()">Adicionar</button></div>
+            <br><div><button type="button" class="btn btn-secondary btn-lg " onclick="window.print();">imprimir</button></div>
             <div id='resultado'></div>
             
                 
