@@ -1,0 +1,35 @@
+{
+  "name": "relatorio-toner",
+  "version": "1.0.0",
+  "description": "controle de tonner",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jos3duardo/relatorio-toner.git"
+  },
+  "keywords": [
+    "tonner",
+    "relatorio"
+  ],
+  "author": "José Eduardo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jos3duardo/relatorio-toner/issues"
+  },
+  "homepage": "https://github.com/jos3duardo/relatorio-toner#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "consign": "^0.1.6",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "sqlite": "^4.0.14",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
