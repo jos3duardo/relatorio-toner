@@ -26,6 +26,7 @@ elementos = {
         
         Quantidade de Toner Sansung Recarregado : ${this.qntSG}
 
+
         Quantidade de toner Brother recarregado : ${this.qntB}
 
         Quantidade de Drum Substituido: ${this.qntD}
