@@ -6,7 +6,7 @@ exports.up = knex => knex.schema.createTableIfNotExists( 'toners', table => {
         table.string('tipo')
         table.string('status')
         table.string('recarga')
-        table.integer('quantidade')
+        table.bigInteger('quantidade')
         table.timestamp('created_at').defaultTo(knex.fn.now())
         table.timestamp('updated_at').defaultTo(knex.fn.now())
   })

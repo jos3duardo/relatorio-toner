@@ -11,6 +11,4 @@ routes
     .delete('/toner/:id', TonerController.delete)
     .patch('/toner/:id', TonerController.contador)
 
-    .get('/servicos')
-
 module.exports = routes

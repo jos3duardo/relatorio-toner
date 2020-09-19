@@ -37,7 +37,10 @@ module.exports = {
     async update (req, res, next) {
         try{
             const { modelo, marca, tipo, status, recarga, quantidade } = req.body
+
             const { id } = req.params
+
+            console.log(id)
 
             let toner = await knex('toners').update(
                 req.body
