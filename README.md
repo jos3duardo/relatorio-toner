@@ -1,8 +1,31 @@
-# API REST Relatorio Tonner
+# Sistema Relatorio Tonner
 
-## Iniciando servidor
+Sistema realiza o acompanhamento e imprime um relatório dos serviços de tonner
+
+### Preview de telas do sistema
+
+home
+![home](images/home.png)
+
+cadastro
+![edicao](images/cadastro.png)
+
+edicao
+![edicao](images/edicao.png)
+
+
+relatorio
+![relatorio](images/relatorio.png)
+
+
+## Iniciando servidor backend
 ```bash
 npm start
+```
+
+## Iniciando servidor frontend
+```bash
+php -S localhost:8000 -t public
 ```
 
 ## Configurando banco de dados
