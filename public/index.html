@@ -48,20 +48,18 @@
                         <th>Modelo</th>
                         <th>Tipo</th>
                         <th>Marca</th>
-                        <th>Status</th>
                         <th>Data</th>
                         <th>Recarga</th>
-                        <th>Quantidade Pó</th>
+                        <th>QTD</th>
                         <th v-if="botoesDeOpcoes">Opções</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="toner in toners" :key="toner.id">
                         <td>{{toner.id}}</td>
-                        <td>{{toner.marca}}</td>
                         <td>{{toner.modelo}}</td>
                         <td>{{toner.tipo}}</td>
-                        <td>{{toner.status}}</td>
+                        <td>{{toner.marca}}</td>
                         <td>{{toner.created_at}}</td>
                         <td>{{toner.recarga}}</td>
                         <td>{{(toner.quantidade / 1000).toFixed(3)}}g</td>
@@ -226,8 +224,8 @@
                     this.mostrarTabela = false
                     this.mostrarFormulario = true
 
-                    this.btnEditar = false
-                    this.btnSalvar = true
+                    this.btnEditar = true
+                    this.btnSalvar = false
 
                 },
                 editarToner(id){
