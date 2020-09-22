@@ -198,7 +198,7 @@
                         tipo: this.novoToner.tipo,
                         status: this.novoToner.status,
                         recarga: this.novoToner.recarga,
-                        quantidae: this.novoToner.quantidade
+                        quantidade: this.novoToner.quantidade
                     })
                     .then(response => {
                         this.limparCampos()
@@ -226,8 +226,8 @@
                     this.mostrarTabela = false
                     this.mostrarFormulario = true
 
-                    this.btnEditar = true
-                    this.btnSalvar = false
+                    this.btnEditar = false
+                    this.btnSalvar = true
 
                 },
                 editarToner(id){
