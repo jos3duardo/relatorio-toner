@@ -213,24 +213,22 @@
                 <table id="myTable3" class="table striped table-striped table-hover table-sm table-responsive-sm">
                     <thead class="thead-dark">
                     <tr>
-                        <th>#</th>
                         <th>Modelo</th>
                         <th>Marca</th>
                         <th>Nome</th>
-                        <th>Nome</th>
-                        <th>status</th>
+                        <th>Status</th>
                         <th>Quantidade</th>
                         <th>Cilindro</th>
+                        <th>Data</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="resumo in resumos" :key="resumo.id">
-                        <td>{{resumo.id}}</td>
                         <td>{{resumo.modelo}}</td>
                         <td>{{resumo.marca}}</td>
                         <td>{{resumo.nome}}</td>
                         <td>{{resumo.status}}</td>
-                        <td>{{resumo.quantidade}}</td>
+                        <td>{{resumo.quantidade / 1000}}g</td>
                         <td>{{resumo.cilindro}}</td>
                         <td>{{resumo.created_at}}</td>
                     </tr>
