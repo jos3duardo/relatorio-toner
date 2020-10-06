@@ -19,10 +19,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" @click="inicio" href="#">Planilha <span class="sr-only">(current)</span></a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">(current)</span>
+                        Planilha
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <a class="dropdown-item" href="#"  @click="inicio" >Toner</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" @click="mostrarTabelaComRelacaoDeServico" href="#">Serviço</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" @click="shownTabelaResumo" href="#">Resumo</a>
+                    </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" @click="formularioCadastroDeToner" href="#">Cadastro</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Cadastro
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                        <a class="dropdown-item" href="#" @click="formularioCadastroDeToner" >Toner</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" @click="formularioServico" href="#">Serviço</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,6 +58,7 @@
     <div  class="container">
         <div class="row mt-5" v-if="mostrarTabela" >
             <div class="col-sm-12 col-md-12">
+                <h3>Relação de Toners Cadastrados</h3>
                 <table id="myTable" class="table striped table-striped table-hover table-sm table-responsive-sm">
                     <thead class="thead-dark">
                     <tr>
@@ -48,9 +66,8 @@
                         <th>Modelo</th>
                         <th>Tipo</th>
                         <th>Marca</th>
+                        <th>cilindro</th>
                         <th>Data</th>
-                        <th>Recarga</th>
-                        <th>QTD</th>
                         <th v-if="botoesDeOpcoes">Opções</th>
                     </tr>
                     </thead>
@@ -60,21 +77,14 @@
                         <td>{{toner.modelo}}</td>
                         <td>{{toner.tipo}}</td>
                         <td>{{toner.marca}}</td>
+                        <td>{{toner.cilindro == '1' ? 'SIM' : 'NÃO'}}</td>
                         <td>{{toner.created_at}}</td>
-                        <td>{{toner.recarga}}</td>
-                        <td>{{(toner.quantidade / 1000).toFixed(3)}}g</td>
                         <td v-if="botoesDeOpcoes">
                             <button @click="populaFormulario(toner)" class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></button>
                             <button @click="apagarToner(toner.id)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                         </td>
                     </tr>
-                    <tr class="thead-dark">
-                        <th colspan="7">Total de pó em quilos usados em recarga</th>
-                        <th >{{ this.total.toFixed(3)}} Kg</th>
-                        <th v-if="botoesDeOpcoes"></th>
-                    </tr>
                     </tbody>
-
                 </table>
             </div>
         </div>
@@ -105,18 +115,127 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6 col-sm-12">
-                            <label for="recarga">Recarga</label>
-                            <input type="text" class="form-control" id="recarga" v-model="novoToner.recarga">
-                        </div>
-                        <div class="form-group col-md-6 col-sm-12">
-                            <label for="quantidade">Quantidade</label>
-                            <input type="number" class="form-control" id="quantidade" v-model="novoToner.quantidade">
+                            <label for="cilindro">Tem Cilindro</label>
+                            <select name="" id="cilindro" class="custom-select" v-model="novoToner.cilindro">
+                                <option value="0">Não</option>
+                                <option value="1">Sim</option>
+                            </select>
                         </div>
                     </div>
                     <button v-if="btnEditar" class="btn btn-danger" @click="editarToner(novoToner.id)">Editar</button>
                     <button v-if="btnSalvar" class="btn btn-danger" @click="cadastrarToner()">Salvar</button>
                     <button class="btn btn-dark" @click="inicio">Volta</button>
                 </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-5" v-if="mostrarTabelaServico" >
+            <div class="col-sm-12 col-md-12">
+                <h3>Relação de Serviços Realizados</h3>
+                <table id="myTable2" class="table striped table-striped table-hover table-sm table-responsive-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Toner</th>
+                        <th>Nome</th>
+                        <th>Status</th>
+                        <th>Quantidade</th>
+                        <th>cilindro</th>
+                        <th>data</th>
+                        <th v-if="botoesDeOpcoesServico">Opções</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="servico in servicos" :key="servico.id">
+                        <td>{{servico.id}}</td>
+                        <td>{{servico.toner_id}}</td>
+                        <td>{{servico.nome}}</td>
+                        <td>{{servico.status}}</td>
+                        <td>{{servico.quantidade}}</td>
+                        <td>{{servico.cilindro}}</td>
+                        <td>{{servico.created_at}}</td>
+                        <td v-if="botoesDeOpcoesServico">
+                            <button  class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></button>
+                            <button @click="apagarServico(servico.id)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mt-5" v-if="mostrarFormularioServico">
+            <div class="row mx-auto">
+                <div class="col-md-12 col-sm-12">
+                    <h3 v-if="btnEditarServico">Formulario para edição de Serviço</h3>
+                    <h3 v-if="btnSalvarServico">Formulario para cadastro de Serviço</h3>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 col-sm-12">
+                            <label for="nome">Nome</label>
+                            <input type="text" class="form-control" id="nome" v-model="novoServico.nome">
+                        </div>
+                        <div class="form-group col-md-6 col-sm-12">
+                            <label for="status">Status</label>
+                            <input type="text" class="form-control" id="status" v-model="novoServico.status">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label for="quantidade">Quantidade</label>
+                            <input type="text" class="form-control" id="quantidade" v-model="novoServico.quantidade">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-12">
+                            <label for="cilindro1">Trocou Cilindro</label>
+                            <select name="" id="cilindro1" class="custom-select" v-model="novoServico.cilindro">
+                                <option value="0">Não</option>
+                                <option value="1">Sim</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6 col-sm-12">
+                            <label for="toners1">Toner | Modelo / Marca</label>
+                            <select name="" id="toners1" class="custom-select" v-model="novoServico.toner_id">
+                                <option v-for="toner in toners" :key="toner.id">
+                                    {{toner.id}}-{{toner.modelo}}-{{toner.marca}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <button v-if="btnEditarServico" class="btn btn-danger" @click="editarToner(novoServico.id)">Editar</button>
+                    <button v-if="btnSalvarServico" class="btn btn-danger" @click="cadastrarServico()">Salvar</button>
+                    <button class="btn btn-dark" @click="inicio">Volta</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5" v-if="mostraTabelaResumo">
+            <div class="col-sm-12 col-md-12">
+                <h3>Resumo Serviços</h3>
+                <table id="myTable3" class="table striped table-striped table-hover table-sm table-responsive-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Nome</th>
+                        <th>Nome</th>
+                        <th>status</th>
+                        <th>Quantidade</th>
+                        <th>Cilindro</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="resumo in resumos" :key="resumo.id">
+                        <td>{{resumo.id}}</td>
+                        <td>{{resumo.modelo}}</td>
+                        <td>{{resumo.marca}}</td>
+                        <td>{{resumo.nome}}</td>
+                        <td>{{resumo.status}}</td>
+                        <td>{{resumo.quantidade}}</td>
+                        <td>{{resumo.cilindro}}</td>
+                        <td>{{resumo.created_at}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -135,32 +254,49 @@
     <script type="module">
 
         const url = 'http://localhost:3001/toner'
+        const urlServico = 'http://localhost:3001/servicos'
+        const urlRelatorio = 'http://localhost:3001/relatorio'
         let app = new Vue({
             el: '#app',
             data(){
                 return{
-                    novoToner: {
-                        id: '', modelo:'', marca:'', tipo:'', status:'', recarga:'', quantidade:''
-                    },
                     toners: '',
+                    novoToner: {
+                        id: '', modelo:'', marca:'', tipo:'', status:'', cilindro:''
+                    },
+                    servicos: '',
+                    novoServico: {
+                        id: '', nome:'', status:'', quantidade:'', toner_id:'', cilindro:''
+                    },
+                    resumos:'',
                     mostrarTabela: true,
+                    mostrarTabelaServico: false,
                     mostrarFormulario: false,
+                    mostrarFormularioServico: false,
+                    mostraTabelaResumo: false,
                     tabelaRelatorio: false,
-                    mostraLoad: false,
                     botoesDeOpcoes: true,
-                    total: 0,
+                    botoesDeOpcoesServico: false,
                     btnSalvar: false,
                     btnEditar: false,
+                    btnEditarServico: false,
+                    btnSalvarServico: false,
                 }
             },
             mounted() {
                 this.listarDados()
+                this.geraRelaorioTonerServico()
             },
             methods: {
                 inicio(){
-                  this.mostrarTabela = true
-                  this.mostrarFormulario = false
+                    this.mostrarTabela = true
+                    this.mostrarFormulario = false
                     this.botoesDeOpcoes = true
+                    this.mostrarFormularioServico = false
+                    this.mostrarFormularioServico = false
+                    this.mostrarTabelaServico = false
+                    this.btnSalvarServico = false
+                    this.mostraTabelaResumo = false
                 },
                 listarDados(){
                     axios.get(url,{
@@ -170,13 +306,11 @@
                         }
                     })
                     .then(response => {
-                        this.total = 0
                         this.toners = response.data
 
                         this.toners.map( toner => {
                             let date = moment(toner.created_at)
                             toner.created_at = date.format('DD/MM/YYYY')
-                            this.total += toner.quantidade / 1000
                         })
                     })
                     .catch(erro => console.error(erro));
@@ -184,7 +318,10 @@
                 formularioCadastroDeToner(){
                     this.limparCampos()
                     this.mostrarFormulario = true
+                    this.mostrarFormularioServico = false
                     this.mostrarTabela = false
+                    this.mostrarTabelaServico = false
+                    this.mostraTabelaResumo = false
 
                     this.btnEditar = false
                     this.btnSalvar = true
@@ -195,8 +332,7 @@
                         marca: this.novoToner.marca,
                         tipo: this.novoToner.tipo,
                         status: this.novoToner.status,
-                        recarga: this.novoToner.recarga,
-                        quantidade: this.novoToner.quantidade
+                        cilindro: this.novoToner.cilindro,
                     })
                     .then(response => {
                         this.limparCampos()
@@ -212,17 +348,17 @@
                     .catch(erro => console.error(erro));
                 },
                 populaFormulario(toner){
-                    console.log(toner)
                     this.novoToner.id = toner.id
                     this.novoToner.modelo = toner.modelo
                     this.novoToner.marca = toner.marca
                     this.novoToner.tipo = toner.tipo
                     this.novoToner.status = toner.status
-                    this.novoToner.recarga = toner.recarga
-                    this.novoToner.quantidade = toner.quantidade
+                    this.novoToner.cilindro = toner.cilindro
 
                     this.mostrarTabela = false
+                    this.mostrarTabelaServico = false
                     this.mostrarFormulario = true
+                    this.mostraTabelaResumo = false
 
                     this.btnEditar = true
                     this.btnSalvar = false
@@ -234,8 +370,7 @@
                         marca: this.novoToner.marca,
                         tipo: this.novoToner.tipo,
                         status: this.novoToner.status,
-                        recarga: this.novoToner.recarga,
-                        quantidade: this.novoToner.quantidade
+                        cilindro: this.novoToner.cilindro,
                     })
                         .then(response => {
 
@@ -244,6 +379,7 @@
                             this.mostrarTabela = true
                             this.mostrarFormulario = false
                             this.mostrarFormularioEdicao = false
+                            this.mostraTabelaResumo = false
 
                             this.listarDados()
                         })
@@ -252,8 +388,11 @@
                 imprimirRelatorio(){
 
                     this.mostrarTabela = true
+                    this.mostrarTabelaServico = false
                     this.mostrarFormulario = false
+                    this.mostrarFormularioServico = false
                     this.botoesDeOpcoes = false
+                    this.mostraTabelaResumo = false
 
                     setTimeout(function(){
                         window.print()
@@ -265,8 +404,84 @@
                     this.novoToner.marca = ''
                     this.novoToner.tipo = ''
                     this.novoToner.status = ''
-                    this.novoToner.recarga = ''
-                    this.novoToner.quantidade = ''
+                    this.novoToner.cilindro = ''
+                },
+                formularioServico(){
+                    this.mostrarFormularioServico = true
+                    this.btnSalvarServico = true
+
+                    this.mostrarTabela = false
+                    this.mostrarTabelaServico = false
+                    this.mostrarFormulario = false
+                    this.botoesDeOpcoes = false
+                    this.mostraTabelaResumo = false
+                },
+                mostrarTabelaComRelacaoDeServico(){
+
+                    this.listarServico()
+
+                    this.mostrarTabelaServico = true
+                    this.mostrarTabela = false
+                    this.mostrarFormulario = false
+                    this.botoesDeOpcoes = false
+                    this.botoesDeOpcoesServico = true
+                    this.mostrarFormularioServico = false
+                    this.btnSalvarServico = false
+                    this.mostraTabelaResumo = false
+                },
+                cadastrarServico(){
+                    axios.post(urlServico, {
+                        nome: this.novoServico.nome,
+                        status: this.novoServico.status,
+                        quantidade: +this.novoServico.quantidade,
+                        cilindro: this.novoServico.cilindro,
+                        toner_id: +this.novoServico.toner_id.split('-')[0],
+                    })
+                        .then(response => {
+                            this.limparCamposSevico()
+                            this.listarServico()
+                            this.mostrarTabelaServico = true
+                            this.mostrarFormularioServico = false
+                            this.mostraTabelaResumo = false
+                        })
+                        .catch(erro => console.error(erro));
+                },
+                listarServico(){
+                    axios.get(urlServico)
+                        .then(response => {
+                            this.servicos = response.data
+                        })
+                        .catch(erro => console.error(erro));
+                },
+                apagarServico(id){
+                    axios.delete(urlServico+'/'+id)
+                    .then(response => {
+                        this.listarServico()
+                    })
+                    .catch(erro => console.error(erro));
+                },
+                limparCamposSevico(){
+                    this.novoServico.nome = ''
+                    this.novoServico.cilindro = ''
+                    this.novoServico.toner_id = ''
+                    this.novoServico.quantidade = ''
+                    this.novoServico.status = ''
+                    this.novoServico.id = ''
+                },
+                geraRelaorioTonerServico(){
+                    axios.get(urlRelatorio)
+                        .then(response => {
+                            this.resumos = response.data
+                        })
+                        .catch(erro => console.error(erro));
+                },
+                shownTabelaResumo(){
+                    this.mostraTabelaResumo = true
+                    this.mostrarTabela= false
+                    this.mostrarTabelaServico= false
+                    this.mostrarFormulario= false
+                    this.mostrarFormularioServico= false
+                    this.geraRelaorioTonerServico()
                 }
             }
         })

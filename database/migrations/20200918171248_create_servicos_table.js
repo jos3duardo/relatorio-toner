@@ -5,7 +5,7 @@ exports.up = knex => knex.schema.createTableIfNotExists( 'servicos', table => {
     table.string('nome')
     table.string('status')
     table.float('quantidade')
-
+    table.integer('cilindro')
     table.integer('toner_id')
         .references('toners.id')
         .notNullable()
